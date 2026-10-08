@@ -1,6 +1,6 @@
 # Academic Value Audit | 学术真实价值审计
 
-**Academic Value Audit** is a Codex skill for evidence-grounded reviews of research claims and their real academic, industrial, social, and public-funding value. The current skill package version is **2.2.2**.
+**Academic Value Audit** is a Codex skill for evidence-grounded reviews of research claims and their real academic, industrial, social, and public-funding value. The current skill package version is **2.3.0**.
 
 It is designed to answer questions such as:
 
@@ -11,7 +11,7 @@ It is designed to answer questions such as:
 
 The skill separates **publication-time academic contribution** from **current practical value**. It builds a task and system model, compares credible alternatives, checks claims against primary sources, and traces recommendations back to evidence and explicit assumptions. Reports normally include a detailed policy/funder version, a public-facing version, and source, search, parameter, calculation, and coverage records.
 
-Both reports explain the actual work, its operating mechanism, the strongest alternatives, and the causes of the field's bottlenecks. The public report defaults to a detailed plain-language article rather than a short summary. See the [explanatory-depth and writing guide](references/explanatory-depth-and-public-writing.md).
+Both reports explain the actual work, its operating mechanism, the strongest alternatives, and the causes of the field's bottlenecks. Version 2.3 requires a source-grounded field explanation before the verdict: component roles, measured system outputs, bottleneck mechanisms, matched alternative workflows, and test denominators must be explained in prose, not just listed. The public report defaults to a detailed plain-language article rather than a short summary. See the [field-understanding guide](references/field-understanding-and-causal-explanation.md) and [explanatory-depth and writing guide](references/explanatory-depth-and-public-writing.md). A [worked technical example](examples/stretchable-silicon-mechanism.md) includes a source-reading record; it illustrates mechanism analysis, not a complete market or funding audit.
 
 ## Standards, theories, and methods it draws on
 
@@ -66,7 +66,8 @@ The included JSON schemas describe the project's report records; they do not by 
 ## Version
 
 - First public release: v2.1.1
-- Current skill package version: 2.2.2
+- Current skill package version: 2.3.0
+- v2.3.0 adds a required mechanism-grounded field explanation and a worked technical example with source-reading limits.
 - Audit date policy: use the execution environment's current date and state it in the report
 
 ## License
@@ -77,13 +78,13 @@ Licensed under the MIT License. See [`LICENSE`](LICENSE).
 
 # Academic Value Audit | 学术真实价值审计
 
-**Academic Value Audit** 是一个 Codex skill，用于以证据为基础，评估学术成果的真实学术、产业、社会与公共经费价值。当前技能版本为 **2.2.2**。
+**Academic Value Audit** 是一个 Codex skill，用于以证据为基础，评估学术成果的真实学术、产业、社会与公共经费价值。当前技能版本为 **2.3.0**。
 
 它关注的问题包括：一篇论文、一个项目、一项专利、一个奖项成果或一个团队究竟新增了什么；这项增量是否改变真实任务的关键瓶颈；最强替代方案能否以更低资源完成同一任务；以及下一笔经费应支持、暂缓还是拒绝什么工作。
 
 技能把发表时的学术贡献与当前现实应用价值分开评价，并要求报告交代实际读取的来源、反方争点、参数和推理链。通常交付面向政策与经费管理者的专业版、大众版，以及证据、搜索、计算和覆盖记录。
 
-两版都要讲清成果本体和工作原理、具体创新、最强替代及瓶颈原因。大众版默认采用详细直白的解释性长文，充分说明为什么得到结论，不能自动缩成短摘要。评价原则、未作答待补问题和纯边界/流程声明的字数，分别不得超过各版实际分析字数的1%；超限须改写。详见[解释深度与写作要求](references/explanatory-depth-and-public-writing.md)。
+两版都要讲清成果本体和工作原理、具体创新、最强替代及瓶颈原因。2.3版要求先交付有原件支撑的领域解释：说明部件分工、系统输出、瓶颈机制、替代方案流程与测试分母，不能只罗列术语和数据。大众版默认采用详细直白的解释性长文，充分说明为什么得到结论，不能自动缩成短摘要。评价原则、未作答待补问题和纯边界/流程声明的字数，分别不得超过各版实际分析字数的1%；超限须改写。详见[领域理解与因果解释](references/field-understanding-and-causal-explanation.md)、[解释深度与写作要求](references/explanatory-depth-and-public-writing.md)及[机制分析示例](examples/stretchable-silicon-mechanism.md)。示例附有来源阅读记录，只展示技术机制分析，不是完整市场或经费审计。
 
 ## 参考的标准、理论与方法
 

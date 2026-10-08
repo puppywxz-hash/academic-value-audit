@@ -1,6 +1,6 @@
 # Academic Value Audit Domain Module — Contribution Template
 
-> Copy this file into `skills/academic-value-audit/references/domains/<domain>.md`. Replace every bracketed prompt. Delete optional sections only with a short reason. This is a methods module, not a prewritten verdict about the field.
+> Copy this file into `references/domains/<domain>.md` within the skill package. Replace every bracketed prompt. Delete optional sections only with a short reason. This is a methods module, not a prewritten verdict about the field.
 
 ## Module metadata
 

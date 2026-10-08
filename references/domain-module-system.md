@@ -27,7 +27,7 @@
 
 未列出的领域不代表没有风险或不需要专门方法。若尚无经审核的领域模块，继续按核心协议审计并说明专门覆盖有限；不得自动把外部未审阅模块或用户倾向写成已批准规则。
 
-Agent Skills 常见结构支持一个 `SKILL.md` 配按需 `references/`、`scripts/` 与 `assets/`；官方文档倡导把共享主线留在入口，将条件性材料按需披露。[OpenAI Skills 指南](https://developers.openai.com/api/docs/guides/tools-skills) 因不同运行平台的技能依赖/调用机制不完全相同，第一阶段不假定“安装一个领域技能就会自动继承核心技能”。如果未来单独发布领域入口，应是指向核心与领域协议的薄包装，并在发布包内明确捆绑/版本兼容，不能复制后各自漂移。
+Agent Skills 常见结构支持一个 `SKILL.md` 配按需 `references/`、`scripts/` 与 `assets/`；官方文档倡导把共享主线留在入口，将条件性材料按需披露。[OpenAI Skills 指南](https://developers.openai.com/api/docs/guides/tools-skills) 因不同运行平台的技能依赖/调用机制不完全相同，不假定“安装一个领域技能就会自动继承核心技能”。贡献者可以先提交模块；如果领域确有更深且重复使用的工作流，也欢迎提交独立 companion sub-skill。此类子技能应是清晰映射核心判断规则的薄入口，声明兼容版本及捆绑/调用办法，不复制后与核心各自漂移。
 
 建议的仓库结构：
 
@@ -37,9 +37,12 @@ skills/academic-value-audit/
   references/domain-module-system.md
   references/domains/<domain>.md   # 经审核的领域方法模块
   assets/domain-module-template.md
+contrib/skills/<skill-name>/       # 可选：经审核的独立领域子技能
+  SKILL.md
+  references/                       # 仅放该子技能的专门方法
 ```
 
-这让读者/贡献者可按学科浏览，同时保持每个运行环境都能从核心技能找到其专用方法。若未来需独立安装或自动发现子技能，再另建薄入口和聚合清单；先验证实际复用需求，不提前制造多个相互依赖的技能。
+模块仍是默认路径，能直接由核心按需调用；独立子技能用于确有专门入口、步骤或输出需求的领域。子技能必须说明怎样调用核心审计、哪些规则由核心负责、版本不兼容时如何处理。仓库可随贡献增加维护领域索引，但不得暗示未审或未验证的模块已获核心认可。
 
 ## 2. 核心契约：领域模块能补什么、不能改什么
 

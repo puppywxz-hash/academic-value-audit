@@ -1,6 +1,6 @@
-# Academic Value Audit
+# Academic Value Audit | 学术真实价值审计
 
-**Academic Value Audit** is a Codex skill for evidence-grounded reviews of research claims and their real academic, industrial, social, and public-funding value. The first public release packages skill version **2.1.1**.
+**Academic Value Audit** is a Codex skill for evidence-grounded reviews of research claims and their real academic, industrial, social, and public-funding value. This repository's first public release packages skill version **2.1.2**.
 
 It is designed to answer questions such as:
 
@@ -10,6 +10,19 @@ It is designed to answer questions such as:
 - What should a funder support, defer, or decline next, and what evidence would change that recommendation?
 
 The skill separates **publication-time academic contribution** from **current practical value**. It builds a task and system model, compares credible alternatives, checks claims against primary sources, and traces recommendations back to evidence and explicit assumptions. Reports normally include a detailed policy/funder version, a public-facing version, and source, search, parameter, calculation, and coverage records.
+
+## Standards, theories, and methods it draws on
+
+The audit workflow adapts established methods to cross-disciplinary research and funding questions. It does not treat any framework as a universal scoring formula, and inclusion here does not mean that the framework's publisher endorses or has validated this skill.
+
+- **Responsible research assessment:** DORA, the Leiden Manifesto, and CoARA inform content-based assessment, transparent indicators, and safeguards against journal-metric shortcuts.
+- **Evidence quality and search transparency:** Cochrane evidence-synthesis guidance and GRADE inform study-level bias and body-of-evidence certainty; Evidence to Decision separates evidence from recommendations; PRISMA-S informs reproducible search records.
+- **Technology and system value:** Health Technology Assessment (HTA), techno-economic analysis (TEA), life-cycle assessment (LCA), ISO 14040, and systems engineering inform task definition, system boundaries, alternatives, and whole-life consequences.
+- **Demand and public impact:** the OECD Oslo Manual, customer-discovery methods, the UK Green Book, the Magenta Book, and Theory of Change inform demand testing, counterfactuals, additionality, distribution, and causal links from outputs to outcomes.
+- **Maturity and next-step decisions:** GAO Technology Readiness Assessment guidance, TRL, value-of-information analysis (VOI/EVSI), and staged testing inform readiness, uncertainty reduction, and whether to support, defer, or stop the next step.
+- **Specialized evidence collection:** WIPO patent-landscape guidance, AAPOR disclosure standards, and grey-literature search methods inform source discovery and method checks where applicable.
+
+Each method is used only for the question it can answer, with its domain, version, assumptions, and limits checked. The [method-source register](references/method-sources.md) links the sources and records key adaptation limits. Domain modules may add field-specific standards, models, and source routes.
 
 ## Install
 
@@ -40,7 +53,7 @@ $academic-value-audit Review DOI 10.xxxx/example. Compare the claimed contributi
 
 ## Contributing domain modules
 
-The skill is intended to support expert-authored subdomain modules. A module should explain the field's real task structure, decisive mechanisms and bottlenecks, strongest alternatives, scale-up constraints, key source routes, common misleading metrics, and the evidence that would change an investment recommendation. Start from [`assets/domain-module-template.md`](assets/domain-module-template.md) and follow [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Domain experts are invited to contribute both **drop-in domain modules** and **more detailed companion sub-skills**. A module should explain the field's real task structure, decisive mechanisms and bottlenecks, strongest alternatives, scale-up constraints, key source routes, common misleading metrics, and the evidence that would change an investment recommendation. A companion sub-skill can provide a deeper field workflow while mapping its conclusions back to the core audit's evidence and decision rules. Start from [`assets/domain-module-template.md`](assets/domain-module-template.md) and follow [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Scope and limitations
 
@@ -51,7 +64,7 @@ The included JSON schemas describe the project's report records; they do not by 
 ## Version
 
 - Public repository release: first public release
-- Skill package version: 2.1.1
+- Skill package version: 2.1.2
 - Audit date policy: use the execution environment's current date and state it in the report
 
 ## License
@@ -60,13 +73,26 @@ Licensed under the MIT License. See [`LICENSE`](LICENSE).
 
 ---
 
-# 学术真实价值审计
+# Academic Value Audit | 学术真实价值审计
 
-**Academic Value Audit** 是一个 Codex skill，用于以证据为基础，评估学术成果的真实学术、产业、社会与公共经费价值。当前首个公开版本打包技能版本 **2.1.1**。
+**Academic Value Audit** 是一个 Codex skill，用于以证据为基础，评估学术成果的真实学术、产业、社会与公共经费价值。当前公开版本打包技能版本 **2.1.2**。
 
 它关注的问题包括：一篇论文、一个项目、一项专利、一个奖项成果或一个团队究竟新增了什么；这项增量是否改变真实任务的关键瓶颈；最强替代方案能否以更低资源完成同一任务；以及下一笔经费应支持、暂缓还是拒绝什么工作。
 
 技能把发表时的学术贡献与当前现实应用价值分开评价，并要求报告交代实际读取的来源、反方争点、参数和推理链。通常交付面向政策与经费管理者的专业版、大众版，以及证据、搜索、计算和覆盖记录。
+
+## 参考的标准、理论与方法
+
+本技能将成熟方法按问题适配，不把任何框架当成跨学科通用打分公式；列出这些方法也不代表其发布机构认可或验证了本技能。
+
+- **负责任的科研评价：** DORA、《莱顿宣言》、CoARA，用于评价具体贡献、透明使用指标，避免以期刊指标替代成果判断。
+- **证据质量与检索透明：** Cochrane 指南、GRADE、Evidence to Decision、PRISMA-S，用于审查证据偏倚、证据确定性、证据与建议的区别及可复现检索。
+- **技术与系统价值：** 卫生技术评估（HTA）、技术经济分析（TEA）、生命周期评价（LCA）、ISO 14040、系统工程，用于界定任务和系统边界、比较替代方案及全生命周期后果。
+- **需求与公共影响：** OECD《奥斯陆手册》、客户发现、英国 Green Book、Magenta Book、变化理论，用于检验需求、反事实、公共资金额外作用、分配和产出到结果的因果链。
+- **成熟度与下一步决策：** GAO 技术成熟度评估指南、TRL、信息价值分析（VOI/EVSI）、分阶段验证，用于分析技术阶段、不确定性及下一步的支持/暂缓/停止选择。
+- **专项资料搜集：** WIPO 专利景观指南、AAPOR 调查披露标准和灰色文献检索方法，在适用时用于系统发现资料并审查方法。
+
+每种方法只回答其适用的问题，并核对版本、假设和边界。详见[方法来源登记表](references/method-sources.md)，其中列出了来源及采用限制；领域模块可补充相应学科的专用方法和标准。
 
 安装时将本目录复制到 `~/.codex/skills/academic-value-audit/`；Windows 默认位置为 `%USERPROFILE%\.codex\skills\academic-value-audit\`。可通过 `$academic-value-audit` 调用。
 

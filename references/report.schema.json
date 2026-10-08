@@ -1,0 +1,390 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Academic Value Audit — evidence and report contract v1.4",
+  "description": "只约束结构与部分缺失语义；证据真实性、引用一致性、单位、归因与推导还需语义及领域审查。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "as_of", "status", "source_coverage", "scope", "entities", "works", "sources", "claims", "evidence", "parameters", "requirements", "comparisons", "models", "relations", "judgments", "quality_audit", "method_audit", "value_profile", "coverage", "limitations", "resume"],
+  "properties": {
+    "schema_version": {"const": "1.4"},
+    "run_id": {"type": "string", "minLength": 1},
+    "as_of": {"type": "string", "format": "date"},
+    "status": {"enum": ["in_progress", "needs_identity", "partial", "complete"]},
+    "source_coverage": {"enum": ["sufficient_for_scope", "source_limited"]},
+    "scope": {"$ref": "#/$defs/scope"},
+    "entities": {"type": "array", "items": {"$ref": "#/$defs/entity"}},
+    "works": {"type": "array", "items": {"$ref": "#/$defs/work"}},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "parameters": {"type": "array", "items": {"$ref": "#/$defs/parameter"}},
+    "requirements": {"type": "array", "items": {"$ref": "#/$defs/requirement"}},
+    "comparisons": {"type": "array", "items": {"$ref": "#/$defs/comparison"}},
+    "models": {"type": "array", "items": {"$ref": "#/$defs/model"}},
+    "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
+    "judgments": {"type": "array", "items": {"$ref": "#/$defs/judgment"}},
+    "quality_audit": {"$ref": "./evidence-quality.schema.json"},
+    "method_audit": {"$ref": "./decision-quality.schema.json"},
+    "outcomes": {"type": "array", "items": {"$ref": "#/$defs/outcome"}},
+    "value_profile": {"type": "array", "items": {"$ref": "#/$defs/value_assessment"}},
+    "coverage": {"$ref": "#/$defs/coverage"},
+    "limitations": {"type": "array", "items": {"$ref": "#/$defs/limitation"}},
+    "resume": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pending_work_ids", "pending_claim_ids", "next_action", "invalidated_record_ids"],
+      "properties": {
+        "pending_work_ids": {"$ref": "#/$defs/ids"},
+        "pending_claim_ids": {"$ref": "#/$defs/ids"},
+        "invalidated_record_ids": {"$ref": "#/$defs/ids"},
+        "next_action": {"type": ["string", "null"]}
+      }
+    },
+    "artifact_paths": {"type": "object", "additionalProperties": {"type": "string"}},
+    "extensions": {"type": "object"}
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1},
+    "ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target_description", "analysis_mode", "temporal_boundary", "discovery_boundary", "input_file"],
+      "properties": {
+        "target_description": {"type": "string"},
+        "analysis_mode": {"enum": ["comprehensive", "sampled"]},
+        "temporal_boundary": {"type": "string"},
+        "discovery_boundary": {"type": "string"},
+        "input_file": {"type": "string"}
+      }
+    },
+    "locator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "mode", "description"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/id"},
+        "mode": {"enum": ["pdf_page", "structural", "timestamp", "code", "source_scope"]},
+        "description": {"type": "string", "minLength": 1},
+        "pdf_page": {"type": "integer", "minimum": 1},
+        "printed_page": {"type": ["string", "null"]},
+        "section": {"type": "string"},
+        "figure_table_equation": {"type": "string"},
+        "start_seconds": {"type": "number", "minimum": 0},
+        "end_seconds": {"type": "number", "minimum": 0},
+        "code_path_version": {"type": "string"}
+      },
+      "allOf": [
+        {"if": {"properties": {"mode": {"const": "pdf_page"}}}, "then": {"required": ["pdf_page"]}, "else": {"not": {"required": ["pdf_page"]}}},
+        {"if": {"properties": {"mode": {"const": "timestamp"}}}, "then": {"required": ["start_seconds"]}}
+      ]
+    },
+    "entity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entity_id", "type", "name", "identity_status", "identity_evidence_ids"],
+      "properties": {
+        "entity_id": {"$ref": "#/$defs/id"},
+        "type": {"enum": ["person", "group", "institution"]},
+        "name": {"type": "string"},
+        "aliases": {"type": "array", "items": {"type": "string"}},
+        "identifiers": {"type": "object", "additionalProperties": {"type": "string"}},
+        "identity_status": {"enum": ["confirmed", "probable", "unresolved"]},
+        "identity_evidence_ids": {"$ref": "#/$defs/ids"},
+        "period_and_membership_notes": {"type": "string"}
+      }
+    },
+    "work": {
+      "type": "object", "additionalProperties": false,
+      "required": ["work_id", "title", "type", "date", "identifiers", "source_ids", "attribution_status", "entity_ids", "cluster_id", "access_status", "analysis_status"],
+      "properties": {
+        "work_id": {"$ref": "#/$defs/id"},
+        "title": {"type": "string"},
+        "type": {"type": "string"},
+        "date": {"type": ["string", "null"]},
+        "identifiers": {"type": "object", "additionalProperties": {"type": "string"}},
+        "source_ids": {"$ref": "#/$defs/ids"},
+        "entity_ids": {"$ref": "#/$defs/ids"},
+        "cluster_id": {"type": ["string", "null"]},
+        "attribution_status": {"enum": ["confirmed", "probable", "unresolved", "excluded"]},
+        "attribution_notes": {"type": "string"},
+        "access_status": {"enum": ["full_text", "full_text_without_si", "partial", "abstract_only", "metadata_only", "unavailable"]},
+        "analysis_status": {"enum": ["not_started", "partial", "completed", "excluded"]},
+        "read_scope": {"type": "string"},
+        "version_relations": {"$ref": "#/$defs/ids"},
+        "inclusion_reason": {"type": "string"}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "title", "url_or_path", "retrieved_at", "visible_scope", "version", "access_mode", "license_notes", "dependency_notes"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/id"},
+        "title": {"type": "string"},
+        "url_or_path": {"type": "string", "minLength": 1},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "publication_date": {"type": ["string", "null"]},
+        "visible_scope": {"type": "string", "minLength": 1},
+        "version": {"type": ["string", "null"]},
+        "access_mode": {"type": "string"},
+        "license_notes": {"type": "string"},
+        "dependency_notes": {"type": "string"},
+        "origin_source_ids": {"$ref": "#/$defs/ids"},
+        "sha256": {"type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$"}
+      }
+    },
+    "claim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["claim_id", "work_ids", "statement", "claimant", "origin", "locator", "type", "modality", "scope", "baseline", "claim_date", "critical"],
+      "properties": {
+        "claim_id": {"$ref": "#/$defs/id"},
+        "work_ids": {"$ref": "#/$defs/ids"},
+        "statement": {"type": "string", "minLength": 1},
+        "claimant": {"type": "string"},
+        "origin": {"enum": ["author_stated", "third_party_stated", "auditor_identified"]},
+        "locator": {"oneOf": [{"$ref": "#/$defs/locator"}, {"type": "null"}]},
+        "type": {"enum": ["factual", "comparative", "causal", "feasibility", "novelty", "impact", "forecast", "normative"]},
+        "modality": {"type": "string", "description": "保留已经、将会、可能、有条件等原始强度。"},
+        "scope": {"type": "string"},
+        "baseline": {"type": ["string", "null"]},
+        "claim_date": {"type": ["string", "null"]},
+        "critical": {"type": "boolean"},
+        "depends_on_claim_ids": {"$ref": "#/$defs/ids"}
+      },
+      "allOf": [{
+        "if": {"properties": {"origin": {"enum": ["author_stated", "third_party_stated"]}}},
+        "then": {"properties": {"locator": {"$ref": "#/$defs/locator"}}}
+      }]
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "locator", "observation", "type", "conditions", "method_notes", "independence_notes", "conflict_of_interest_notes"],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/id"},
+        "locator": {"$ref": "#/$defs/locator"},
+        "observation": {"type": "string", "minLength": 1},
+        "type": {"enum": ["reported_result", "direct_measurement", "formal_derivation", "official_record", "usage_context", "qualitative_primary", "secondary_summary"]},
+        "conditions": {"type": "string"},
+        "method_notes": {"type": "string"},
+        "independence_notes": {"type": "string"},
+        "conflict_of_interest_notes": {"type": "string"},
+        "shared_data_or_origin_ids": {"$ref": "#/$defs/ids"}
+      }
+    },
+    "numeric_value": {
+      "oneOf": [
+        {"type": "number"},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["lower", "upper", "interval_type"],
+          "properties": {
+            "lower": {"type": ["number", "null"]},
+            "upper": {"type": ["number", "null"]},
+            "interval_type": {"enum": ["observed_range", "confidence_interval", "credible_interval", "scenario_range", "bound"]},
+            "level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1}
+          },
+          "anyOf": [{"properties": {"lower": {"type": "number"}}}, {"properties": {"upper": {"type": "number"}}}],
+          "allOf": [{"if": {"properties": {"interval_type": {"enum": ["confidence_interval", "credible_interval"]}}}, "then": {"required": ["level"]}}]
+        }
+      ]
+    },
+    "parameter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["parameter_id", "name", "status", "value", "unit", "definition", "conditions", "origin", "evidence_ids", "derivation_model_id", "assumption_notes", "date", "processing_notes"],
+      "properties": {
+        "parameter_id": {"$ref": "#/$defs/id"},
+        "name": {"type": "string"},
+        "status": {"enum": ["known", "unknown", "incomparable", "not_applicable", "censored"]},
+        "value": {"oneOf": [{"$ref": "#/$defs/numeric_value"}, {"type": "null"}]},
+        "unit": {"type": ["string", "null"]},
+        "definition": {"type": "string"},
+        "conditions": {"type": "string"},
+        "origin": {"enum": ["measured", "reported", "derived", "scenario_assumption", "expert_assumption", null]},
+        "evidence_ids": {"$ref": "#/$defs/ids"},
+        "derivation_model_id": {"type": ["string", "null"]},
+        "assumption_notes": {"type": ["string", "null"]},
+        "date": {"type": ["string", "null"]},
+        "processing_notes": {"type": "string", "description": "记录换算、读图或原样采用等处理。"},
+        "censoring_notes": {"type": "string", "minLength": 1},
+        "measurement_uncertainty_notes": {"type": "string"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["unknown", "incomparable", "not_applicable"]}}},
+          "then": {"properties": {"value": {"type": "null"}}},
+          "else": {"properties": {"value": {"$ref": "#/$defs/numeric_value"}, "unit": {"type": "string", "minLength": 1}, "origin": {"enum": ["measured", "reported", "derived", "scenario_assumption", "expert_assumption"]}}}
+        },
+        {"if": {"properties": {"origin": {"const": "derived"}}}, "then": {"properties": {"derivation_model_id": {"type": "string", "minLength": 1}}}},
+        {"if": {"properties": {"origin": {"enum": ["measured", "reported"]}, "status": {"enum": ["known", "censored"]}}}, "then": {"properties": {"evidence_ids": {"minItems": 1}}}},
+        {"if": {"properties": {"origin": {"enum": ["scenario_assumption", "expert_assumption"]}}}, "then": {"properties": {"assumption_notes": {"type": "string", "minLength": 1}}}},
+        {"if": {"properties": {"status": {"const": "censored"}}}, "then": {"required": ["censoring_notes"], "properties": {"value": {"type": "object", "properties": {"interval_type": {"const": "bound"}}, "required": ["interval_type"]}}}}
+      ]
+    },
+    "requirement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requirement_id", "scenario", "metric", "role", "operator", "threshold_parameter_ids", "evidence_ids", "conditions", "rationale", "basis_kind", "issuer_or_stakeholder", "binding_status", "validation_status", "applicability_notes", "gate_eligible", "derivation_model_ids", "conflict_notes"],
+      "properties": {
+        "requirement_id": {"$ref": "#/$defs/id"},
+        "scenario": {"type": "string"},
+        "metric": {"type": "string"},
+        "role": {"enum": ["necessary", "preference"]},
+        "operator": {"enum": ["minimum", "maximum", "range", "qualitative"]},
+        "threshold_parameter_ids": {"$ref": "#/$defs/ids"},
+        "evidence_ids": {"$ref": "#/$defs/ids"},
+        "conditions": {"type": "string"},
+        "rationale": {"type": "string", "minLength": 1},
+        "basis_kind": {"enum": ["explicit_requirement", "usage_derived", "reference_benchmark", "standard_test_protocol", "author_claim", "scenario_assumption", "unknown"]},
+        "issuer_or_stakeholder": {"type": ["string", "null"]},
+        "binding_status": {"enum": ["mandatory_in_scope", "contractual", "declared_target", "nonbinding", "unknown"]},
+        "validation_status": {"enum": ["confirmed_in_scope", "supported_derivation", "scenario_only", "unverified", "not_applicable"]},
+        "applicability_notes": {"type": "string", "minLength": 1},
+        "gate_eligible": {"type": "boolean", "description": "是否有资格作为真实场景必要门槛；不表示已满足或所有用户普遍需要。"},
+        "derivation_model_ids": {"$ref": "#/$defs/ids"},
+        "conflict_notes": {"type": "string"}
+      },
+      "allOf": [
+        {"if": {"properties": {"gate_eligible": {"const": true}}}, "then": {"properties": {"role": {"const": "necessary"}}, "anyOf": [{"properties": {"basis_kind": {"const": "explicit_requirement"}, "validation_status": {"const": "confirmed_in_scope"}}}, {"properties": {"basis_kind": {"const": "usage_derived"}, "validation_status": {"const": "supported_derivation"}}}]}},
+        {"if": {"properties": {"basis_kind": {"const": "explicit_requirement"}, "validation_status": {"const": "confirmed_in_scope"}}}, "then": {"properties": {"evidence_ids": {"minItems": 1}, "issuer_or_stakeholder": {"type": "string", "minLength": 1}}}},
+        {"if": {"properties": {"basis_kind": {"const": "usage_derived"}, "validation_status": {"const": "supported_derivation"}}}, "then": {"properties": {"derivation_model_ids": {"minItems": 1}}}}
+      ]
+    },
+    "comparison": {
+      "type": "object", "additionalProperties": false,
+      "required": ["comparison_id", "scenario", "candidate", "baseline", "perspective", "evidence_cutoff", "requirement_ids", "candidate_parameter_ids", "baseline_parameter_ids", "baseline_evidence_ids", "comparability", "comparability_notes", "requirement_results", "model_ids", "conclusion"],
+      "properties": {
+        "comparison_id": {"$ref": "#/$defs/id"},
+        "scenario": {"type": "string"},
+        "candidate": {"type": "string"},
+        "baseline": {"type": "string"},
+        "perspective": {"enum": ["origin", "audit", "forecast"]},
+        "evidence_cutoff": {"type": "string", "format": "date"},
+        "requirement_ids": {"$ref": "#/$defs/ids"},
+        "candidate_parameter_ids": {"$ref": "#/$defs/ids"},
+        "baseline_parameter_ids": {"$ref": "#/$defs/ids"},
+        "baseline_evidence_ids": {"$ref": "#/$defs/ids"},
+        "comparability": {"enum": ["matched", "partially_matched", "incomparable", "unknown"]},
+        "comparability_notes": {"type": "string", "minLength": 1},
+        "requirement_results": {
+          "type": "array", "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["requirement_id", "candidate_state", "baseline_state", "basis_ids", "notes"],
+            "properties": {
+              "requirement_id": {"$ref": "#/$defs/id"},
+              "candidate_state": {"enum": ["passes", "fails", "uncertain", "incomparable", "not_applicable"]},
+              "baseline_state": {"enum": ["passes", "fails", "uncertain", "incomparable", "not_applicable"]},
+              "basis_ids": {"$ref": "#/$defs/ids"},
+              "notes": {"type": "string"}
+            }
+          }
+        },
+        "model_ids": {"$ref": "#/$defs/ids"},
+        "conclusion": {"type": "string"}
+      }
+    },
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_id", "expression", "input_parameter_ids", "output_parameter_ids", "scope", "assumptions", "status", "sensitivity_notes", "flip_conditions"],
+      "properties": {
+        "model_id": {"$ref": "#/$defs/id"},
+        "expression": {"type": "string", "minLength": 1},
+        "input_parameter_ids": {"$ref": "#/$defs/ids"},
+        "output_parameter_ids": {"$ref": "#/$defs/ids"},
+        "scope": {"type": "string"},
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "status": {"enum": ["computed", "not_computable", "not_applicable"]},
+        "sensitivity_notes": {"type": "string"},
+        "flip_conditions": {"type": "array", "items": {"type": "string"}},
+        "method_evidence_ids": {"$ref": "#/$defs/ids"},
+        "implementation_version": {"type": ["string", "null"]}
+      }
+    },
+    "relation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["from_id", "to_id", "type", "notes"],
+      "properties": {
+        "from_id": {"$ref": "#/$defs/id"},
+        "to_id": {"$ref": "#/$defs/id"},
+        "type": {"enum": ["supports", "contradicts", "qualifies", "depends_on", "duplicates", "version_of", "alternative_explanation", "reuses", "member_of", "funded_by"]},
+        "notes": {"type": "string"}
+      }
+    },
+    "judgment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["judgment_id", "claim_id", "status", "perspective", "evidence_cutoff", "scope", "support_evidence_ids", "opposing_evidence_ids", "model_ids", "rationale", "confidence", "confidence_reasons", "uncertainties", "flip_conditions", "issue_tags"],
+      "properties": {
+        "judgment_id": {"$ref": "#/$defs/id"},
+        "claim_id": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["supported", "conditional", "mixed", "insufficient", "contradicted", "not_testable_as_stated", "out_of_scope"]},
+        "perspective": {"enum": ["origin", "audit", "forecast"]},
+        "evidence_cutoff": {"type": "string", "format": "date"},
+        "scope": {"type": "string"},
+        "support_evidence_ids": {"$ref": "#/$defs/ids"},
+        "opposing_evidence_ids": {"$ref": "#/$defs/ids"},
+        "model_ids": {"$ref": "#/$defs/ids"},
+        "rationale": {"type": "string", "minLength": 1},
+        "confidence": {"enum": ["high", "medium", "low"]},
+        "confidence_reasons": {"type": "string", "minLength": 1},
+        "uncertainties": {"type": "array", "items": {"type": "string"}},
+        "flip_conditions": {"type": "array", "items": {"type": "string"}},
+        "issue_tags": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["outcome_id", "description", "scope", "evidence_ids", "parameter_ids", "attribution_status", "counterfactual_notes", "overlap_notes"],
+      "properties": {
+        "outcome_id": {"$ref": "#/$defs/id"},
+        "description": {"type": "string"},
+        "scope": {"type": "string"},
+        "evidence_ids": {"$ref": "#/$defs/ids"},
+        "parameter_ids": {"$ref": "#/$defs/ids"},
+        "attribution_status": {"enum": ["causal_estimate", "documented_contribution", "association_only", "unknown", "scenario_only"]},
+        "counterfactual_notes": {"type": "string"},
+        "overlap_notes": {"type": "string"}
+      }
+    },
+    "value_assessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dimension", "scope", "assessment", "judgment_ids", "outcome_ids", "parameter_ids", "notes"],
+      "properties": {
+        "dimension": {"enum": ["academic", "industrial", "social", "exploratory", "resources"]},
+        "scope": {"type": "string"},
+        "assessment": {"enum": ["established", "conditional_potential", "not_demonstrated", "contradicted_in_scope", "not_applicable", "not_assessable"]},
+        "judgment_ids": {"$ref": "#/$defs/ids"},
+        "outcome_ids": {"$ref": "#/$defs/ids"},
+        "parameter_ids": {"$ref": "#/$defs/ids"},
+        "notes": {"type": "string", "minLength": 1}
+      }
+    },
+    "coverage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["denominator_scope", "discovered_candidates", "deduplicated", "confirmed_attribution", "included", "full_text_obtained", "deeply_analyzed", "critical_claims_identified", "critical_claims_adjudicated", "true_total_known", "exclusion_notes"],
+      "properties": {
+        "denominator_scope": {"type": "string", "minLength": 1},
+        "discovered_candidates": {"type": "integer", "minimum": 0},
+        "deduplicated": {"type": "integer", "minimum": 0},
+        "confirmed_attribution": {"type": "integer", "minimum": 0},
+        "included": {"type": "integer", "minimum": 0},
+        "full_text_obtained": {"type": "integer", "minimum": 0},
+        "deeply_analyzed": {"type": "integer", "minimum": 0},
+        "critical_claims_identified": {"type": "integer", "minimum": 0},
+        "critical_claims_adjudicated": {"type": "integer", "minimum": 0},
+        "true_total_known": {"type": "boolean"},
+        "true_total": {"type": ["integer", "null"], "minimum": 0},
+        "exclusion_notes": {"type": "string"},
+        "si_and_citation_context_coverage_notes": {"type": "string"}
+      },
+      "allOf": [{
+        "if": {"properties": {"true_total_known": {"const": true}}},
+        "then": {"required": ["true_total"], "properties": {"true_total": {"type": "integer", "minimum": 0}}},
+        "else": {"properties": {"true_total": {"type": "null"}}}
+      }]
+    },
+    "limitation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["description", "affected_ids", "effect_on_conclusion", "resolution"],
+      "properties": {
+        "description": {"type": "string"},
+        "affected_ids": {"$ref": "#/$defs/ids"},
+        "effect_on_conclusion": {"type": "string"},
+        "resolution": {"type": "string"}
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "学术真实价值审计"
+  short_description: "从原始材料、真实需求和替代方案核查研究贡献、应用价值及投入依据"
+  default_prompt: "使用 $academic-value-audit 分析这些材料的实际贡献、价值主张及可追溯的量化依据。"

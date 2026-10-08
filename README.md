@@ -1,6 +1,6 @@
 # Academic Value Audit | 学术真实价值审计
 
-**Academic Value Audit** is a Codex skill for evidence-grounded reviews of research claims and their real academic, industrial, social, and public-funding value. The current skill package version is **2.2.0**.
+**Academic Value Audit** is a Codex skill for evidence-grounded reviews of research claims and their real academic, industrial, social, and public-funding value. The current skill package version is **2.2.1**.
 
 It is designed to answer questions such as:
 
@@ -66,7 +66,7 @@ The included JSON schemas describe the project's report records; they do not by 
 ## Version
 
 - First public release: v2.1.1
-- Current skill package version: 2.2.0
+- Current skill package version: 2.2.1
 - Audit date policy: use the execution environment's current date and state it in the report
 
 ## License
@@ -77,7 +77,7 @@ Licensed under the MIT License. See [`LICENSE`](LICENSE).
 
 # Academic Value Audit | 学术真实价值审计
 
-**Academic Value Audit** 是一个 Codex skill，用于以证据为基础，评估学术成果的真实学术、产业、社会与公共经费价值。当前技能版本为 **2.2.0**。
+**Academic Value Audit** 是一个 Codex skill，用于以证据为基础，评估学术成果的真实学术、产业、社会与公共经费价值。当前技能版本为 **2.2.1**。
 
 它关注的问题包括：一篇论文、一个项目、一项专利、一个奖项成果或一个团队究竟新增了什么；这项增量是否改变真实任务的关键瓶颈；最强替代方案能否以更低资源完成同一任务；以及下一笔经费应支持、暂缓还是拒绝什么工作。
 
